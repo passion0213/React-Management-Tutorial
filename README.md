@@ -1,5 +1,5 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
+## Management system
+This project is clients management system for purpos of React lesson.
 ## Available Scripts
 
 In the project directory, you can run:
