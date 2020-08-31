@@ -7,51 +7,43 @@ import Paper from '@material-ui/core/Paper'
 import TableBody from '@material-ui/core/TableBody'
 import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
-import {withStyles} from '@material-ui/core/styles'
+import { withStyles } from '@material-ui/core/styles'
 
-const styles= theme => ({
-  root:{
-    width:"100%",
+const styles = theme => ({
+  root: {
+    width: "100%",
     marginTop: theme.spacing(3),
     overflowX: "auto"
   },
-  table:{
-    minWidth:1080,
+  table: {
+    minWidth: 1080,
   }
-})
+});
 
-const customers = [
-  {
-    "id": 1,
-    "image": "https://placeimg.com/64/64/1",
-    "name": "Smith",
-    "birthday": "19920219",
-    "gender": "male",
-    "job": "student"
-  },
-  {
-    "id": 2,
-    "image": "https://placeimg.com/64/64/2",
-    "name": "Ana",
-    "birthday": "19850219",
-    "gender": "female",
-    "job": "doctor"
-  },
-  {
-    "id": 3,
-    "image": "https://placeimg.com/64/64/3",
-    "name": "John",
-    "birthday": "20050219",
-    "gender": "male",
-    "job": "student"
-  },
-]
+
 class App extends Component {
+
+  state = {
+    customers: ""
+  }
+
+  componentDidMount() {
+    this.callApi()
+      .then(res => this.setState({ customers: res }))
+      .catch(err => console.log(err))
+  }
+
+  callApi = async () => {
+    const response = await fetch('/api/customers');
+    const body = await response.json();
+    return body;
+  }
+
   render() {
-    const {classes} = this.props;
+    const { classes } = this.props;
     return (
       <Paper className={classes.root}>
-        <Table className = {classes.table}>
+        <Table className={classes.table}>
           <TableHead>
             <TableRow>
               <TableCell>No</TableCell>
@@ -64,7 +56,7 @@ class App extends Component {
           </TableHead>
           <TableBody>
             {
-              customers.map(customer => {
+              this.state.customers ? this.state.customers.map(customer => {
                 return (
                   <Customer
                     key={customer.id}
@@ -76,11 +68,9 @@ class App extends Component {
                     gender={customer.gender}
                   />
                 )
-              })
-            }
+              }) : ""}
           </TableBody>
         </Table>
-
       </Paper>
     )
   }
